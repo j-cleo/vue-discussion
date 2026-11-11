@@ -18,44 +18,7 @@
 
     const isLoading = ref(false);
 
-    const submitForm = async() => {
-        if (!recaptchaToken.value) {
-            notyf.error('Please verify that you are not a robot.');
-            return;
-        }
-        isLoading.value = true;
-
-        try {
-            const response = await axios.post("https://api.web3forms.com/submit", {
-                access_key: WEB3FORMS_ACCESS_KEY,
-                subject: subject,
-                name: name.value,
-                email: email.value,
-                message: message.value
-            }, {
-                headers: {
-                    'Content-Type' : "application/json",
-                    Accept: "application/json"
-                }
-            }
-        )
-
-        const result = response.data;
-        if(result.success) {
-            notyf.success("Message Sent!");
-            name.value = "";
-            email.value = "";
-            message.value = "";
-        }
-
-        } catch (e) {
-            notyf.error("Failed to send email!");
-        } finally {
-            isLoading.value = false;
-        }
-    }
-
-        const recaptchaContainer = ref(null);
+    const recaptchaContainer = ref(null);
     const recaptchaWidgetId = ref(null);
     const recaptchaToken = ref('');
 
@@ -110,6 +73,43 @@
         clearInterval(interval);
       });
     });
+
+    const submitForm = async() => {
+        if (!recaptchaToken.value) {
+            notyf.error('Please verify that you are not a robot.');
+            return;
+        }
+        isLoading.value = true;
+
+        try {
+            const response = await axios.post("https://api.web3forms.com/submit", {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: subject,
+                name: name.value,
+                email: email.value,
+                message: message.value
+            }, {
+                headers: {
+                    'Content-Type' : "application/json",
+                    Accept: "application/json"
+                }
+            }
+        )
+
+        const result = response.data;
+        if(result.success) {
+            notyf.success("Message Sent!");
+            name.value = "";
+            email.value = "";
+            message.value = "";
+        }
+
+        } catch (e) {
+            notyf.error("Failed to send email!");
+        } finally {
+            isLoading.value = false;
+        }
+    }
 </script>
 
 <template>
